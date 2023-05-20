@@ -22,15 +22,15 @@ jobs:
     - name: Log some stuff
       run: |
         echo "Line One"
-        echo ${{ steps.dependabot-metadata.outputs.previous-version }}
+        echo "${{ steps.dependabot-metadata.outputs.previous-version }}"
         echo "Line Two"
-        echo ${{ steps.dependabot-metadata.outputs.new-version }}
+        echo "${{ steps.dependabot-metadata.outputs.new-version }}"
         echo "Line Three"
     - name: Update Version Number in Other Files
       uses: jacobtomlinson/gha-find-replace@v3
       with:
-        find: ${{ steps.dependabot-metadata.outputs.previous-version }}
-        replace: ${{ steps.dependabot-metadata.outputs.new-version }}
+        find: "${{ steps.dependabot-metadata.outputs.previous-version }}"
+        replace: "${{ steps.dependabot-metadata.outputs.new-version }}"
         regex: false
     - name: Commit & Push Changes to PR
       uses: EndBug/add-and-commit@v9.1.3
