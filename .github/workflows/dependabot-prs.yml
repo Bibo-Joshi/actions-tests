@@ -10,19 +10,21 @@ jobs:
       pull-requests: write
 
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
     - name: Fetch Dependabot metadata
       id: dependabot-metadata
       uses: dependabot/fetch-metadata@v1.4.0
     - uses: actions/checkout@v3.5.2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
     - name: Update Version Number in Other Files
       uses: jacobtomlinson/gha-find-replace@v3
       with:
         find: ${{ steps.dependabot-metadata.outputs.previous-version }}
         replace: ${{ steps.dependabot-metadata.outputs.new-version }}
         regex: false
-    - name: Push Changes to PR
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+    - name: Commit & Push Changes to PR
+      uses: EndBug/add-and-commit@v9.1.3
+      message: 'Update version number in other files'
