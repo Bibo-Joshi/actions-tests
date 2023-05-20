@@ -13,12 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
+
     - name: Fetch Dependabot metadata
       id: dependabot-metadata
       uses: dependabot/fetch-metadata@v1.4.0
+
     - uses: actions/checkout@v3.5.2
       with:
         ref: ${{ github.event.pull_request.head.ref }}
+
+    # There surely is a way to do this directly in bash, but @Bibo-Joshi could not figure it out
+    # and this Python workaround does thi trick, so ¯\_(ツ)_/¯
     - name: Strip Whitespaces from Versions
       uses: jannekem/run-python-script-action@v1
       id: version-numbers
@@ -28,24 +33,14 @@ jobs:
           for name, value in outputs.items():
             if name.endswith("-version"):
               set_output(name, value.strip())
-    - name: Log some stuff
-      run: |
-        echo "Line One"
-        echo "${{ steps.dependabot-metadata.outputs.previous-version }}"
-        echo "Line Two"
-        echo "${{ steps.dependabot-metadata.outputs.new-version }}"
-        echo "Line Three"
-        echo "Line One"
-        echo "${{ steps.version-numbers.outputs.previous-version }}"
-        echo "Line Two"
-        echo "${{ steps.version-numbers.outputs.new-version }}"
-        echo "Line Three"
+
     - name: Update Version Number in Other Files
       uses: jacobtomlinson/gha-find-replace@v3
       with:
         find: ${{ steps.version-numbers.outputs.previous-version }}
         replace: ${{ steps.version-numbers.outputs.new-version }}
         regex: false
+
     - name: Commit & Push Changes to PR
       uses: EndBug/add-and-commit@v9.1.3
       with:
