@@ -24,8 +24,8 @@ jobs:
       id: version-numbers
       with:
         script: |
-          previous_version = str(${{ steps.dependabot-metadata.outputs.previous-version }})
-          new_version = str(${{ steps.dependabot-metadata.outputs.new-version }})
+          previous_version = "${{ steps.dependabot-metadata.outputs.previous-version }}"
+          new_version = "${{ steps.dependabot-metadata.outputs.new-version }}"
           set_output("previous-version", previous_version.strip())
           set_output("new-version", new_version.strip())
     - name: Log some stuff
