@@ -10,7 +10,7 @@ jobs:
       pull-requests: write
 
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.user.login == 'dependabot' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - name: Fetch Dependabot metadata
       id: dependabot-metadata
