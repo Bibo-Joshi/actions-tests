@@ -19,6 +19,13 @@ jobs:
     - uses: actions/checkout@v3.5.2
       with:
         ref: ${{ github.event.pull_request.head.ref }}
+    - name: Log some stuff
+      run: |
+        echo "Line One"
+        echo ${{ steps.dependabot-metadata.outputs.previous-version }}
+        echo "Line Two"
+        echo ${{ steps.dependabot-metadata.outputs.new-version }}
+        echo "Line Three"
     - name: Update Version Number in Other Files
       uses: jacobtomlinson/gha-find-replace@v3
       with:
