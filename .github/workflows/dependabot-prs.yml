@@ -20,12 +20,14 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
     - name: Strip Whitespaces from Versions
+      uses: jannekem/run-python-script-action@v1
       id: version-numbers
-      run:
-        PREVIOUS_VERSION="$(echo -e "${{ steps.dependabot-metadata.outputs.previous-version }}" | sed -e 's/^[[:space:]]*//')"
-        NEW_VERSION="$(echo -e "${{ steps.dependabot-metadata.outputs.new-version }}" | sed -e 's/^[[:space:]]*//')"
-        echo "previous-version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
-        echo "new-version=$NEW_VERSION" >> $GITHUB_OUTPUT
+      with:
+        script: |
+          previous_version = str(${{ steps.dependabot-metadata.outputs.previous-version }})
+          new_version = str(${{ steps.dependabot-metadata.outputs.new-version }})
+          set_output("previous-version", previous_version.strip())
+          set_output("new-version", new_version.strip())
     - name: Log some stuff
       run: |
         echo "Line One"
