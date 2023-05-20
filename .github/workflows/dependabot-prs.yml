@@ -24,7 +24,7 @@ jobs:
       id: version-numbers
       with:
         script: |
-          outputs = ${{ steps.dependabot-metadata.outputs }}
+          outputs = ${{ toJSON(steps.dependabot-metadata.outputs) }}
           for name, value in outputs.items():
             if name.endswith("-version"):
               set_output(name, value.strip())
