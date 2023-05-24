@@ -25,8 +25,8 @@ jobs:
     - name: Update Version Number in Other Files
       uses: jacobtomlinson/gha-find-replace@v3
       with:
-        find: ${{ steps.version-numbers.outputs.previous-version }}
-        replace: ${{ steps.version-numbers.outputs.new-version }}
+        find: ${{ steps.dependabot-metadata.outputs.previous-version }}
+        replace: ${{ steps.dependabot-metadata.outputs.new-version }}
         regex: false
 
     - name: Commit & Push Changes to PR
